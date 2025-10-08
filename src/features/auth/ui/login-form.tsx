@@ -1,12 +1,12 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import khoibe from "../assets/images/khoibe.jpg"
+import { cn } from "@/shared/lib/utils"
+import { Button } from "@/shared/ui/button"
+import { Card, CardContent } from "@/shared/ui/card"
+import { Input } from "@/shared/ui/input"
+import { Label } from "@/shared/ui/label"
+import khoibe from "@/shared/assets/images/khoibe.jpg"
 import { useState } from "react"
-import { login } from "@/service/auth"
-import { useToken } from "@/auth/TokenProvider"
+import { login } from "@/shared/api/auth"
+import { useToken } from "@/app/providers/TokenProvider"
 export function LoginForm({
   className,
   ...props

@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { HashRouter, Routes, Route } from "react-router"
 import './index.css'
 import App from './App'
-import HomePage from './pages/Home'
-import { TokenProvider } from '@/auth/TokenProvider'
+import HomePage from './pages/home/ui/Home'
+import { TokenProvider } from '@/app/providers/TokenProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
