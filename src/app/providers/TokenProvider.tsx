@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useCallback } from 'react';
+import React, { createContext, useContext, useCallback } from 'react';
 
 type TokenCtxType = {
   getAccessToken: () => string | null;
@@ -8,12 +8,24 @@ type TokenCtxType = {
 
 const TokenCtx = createContext<TokenCtxType | null>(null);
 
-export const TokenProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const accessTokenRef = useRef<string | null>(null);
+const ACCESS_TOKEN_KEY = 'access_token';
 
-  const getAccessToken = useCallback(() => accessTokenRef.current, []);
-  const setAccessToken = useCallback((t: string | null) => { accessTokenRef.current = t; }, []);
-  const clearAccessToken = useCallback(() => { accessTokenRef.current = null; }, []);
+export const TokenProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const getAccessToken = useCallback(() => {
+    return localStorage.getItem(ACCESS_TOKEN_KEY);
+  }, []);
+
+  const setAccessToken = useCallback((token: string | null) => {
+    if (token) {
+      localStorage.setItem(ACCESS_TOKEN_KEY, token);
+    } else {
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+    }
+  }, []);
+
+  const clearAccessToken = useCallback(() => {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+  }, []);
 
   return (
     <TokenCtx.Provider value={{ getAccessToken, setAccessToken, clearAccessToken }}>
