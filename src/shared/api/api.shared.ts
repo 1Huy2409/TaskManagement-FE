@@ -21,7 +21,7 @@ export interface ApiError {
 
 export const api = {
     auth: {
-        login: async <T = any>(data: { email: string; password: string }): Promise<ApiResponse<T>> => {
+        login: async <T = any>(data: { username: string; password: string }): Promise<ApiResponse<T>> => {
             const res = await axiosInstance.post<ApiResponse<T>>(API_ENDPOINT.auth.login, data);
             return res.data;
         },

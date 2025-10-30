@@ -4,9 +4,9 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import { Outlet } from "react-router"
 
-
-export default function HomePage() {
+export default function DashboardLayout() {
   return (
     <SidebarProvider
       style={
@@ -23,7 +23,7 @@ export default function HomePage() {
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <div className="px-4 lg:px-6">
-                <p>hi</p>
+                <Outlet />
               </div>
             </div>
           </div>

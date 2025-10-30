@@ -4,6 +4,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
 const API_BASE_URL = env.apiBaseUrl;
 const ACCESS_TOKEN_KEY = 'access_token';
+const USER_INFO_KEY = 'user_info';
 
 // Helper functions để quản lý token qua localStorage
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -15,6 +16,12 @@ const setAccessToken = (token: string | null) => {
     }
 };
 const clearAccessToken = () => localStorage.removeItem(ACCESS_TOKEN_KEY);
+
+// Helper to clear all session data
+const clearSession = () => {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(USER_INFO_KEY);
+};
 
 export interface FetchFactoryConfig extends AxiosRequestConfig { }
 export class FetchFactory {
@@ -52,29 +59,29 @@ export class FetchFactory {
             async (error: AxiosError) => {
                 const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-                // Handle 401 Unauthorized - Token expired (chỉ retry 1 lần duy nhất)
                 if (error.response?.status === 401 && !originalRequest._retry) {
                     originalRequest._retry = true;
                     clearAccessToken();
                     try {
-                        // Gọi refresh token API (không qua interceptor để tránh loop)
                         const response = await axios.post(
                             `${API_BASE_URL}/auth/processNewToken`,
                             {},
                             { withCredentials: true }
                         );
-                        const newAccessToken = response.data.accessToken;
+                        const newAccessToken = response.data.responseObject.newAccessToken;
                         setAccessToken(newAccessToken);
 
-                        // Retry request gốc với token mới
                         if (originalRequest.headers) {
                             originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                         }
                         return this.instance(originalRequest);
                     } catch (refreshError) {
-                        // Refresh token thất bại -> redirect về login
-                        clearAccessToken();
+                        console.error('Refresh token failed, logging out...');
+                        clearSession();
+
+                        // Redirect về login page
                         window.location.href = '/#/login';
+
                         return Promise.reject(refreshError);
                     }
                 }

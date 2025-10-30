@@ -7,24 +7,39 @@ import khoibe from "@/shared/assets/images/khoibe.jpg"
 import { useState } from "react"
 import { api } from "@/shared/api/api.shared"
 import { useToken } from "@/app/providers/TokenProvider"
+import { useUser } from "@/app/providers/UserProvider"
 import { env } from "@/shared/config/env"
+import {useNavigate} from 'react-router-dom'
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const {setAccessToken} = useToken()
+  const {setUser} = useUser()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       const data = await api.auth.login({
-        email: username,
+        username: username,
         password: password
       })
       const accessToken = data.responseObject.accessToken
+      const userInfo = data.responseObject.user
+      
+      // Save token and user info
       setAccessToken(accessToken)
-      window.location.href = '/#/home'
+      setUser({
+        id: userInfo.id,
+        username: userInfo.username,
+        email: userInfo.email,
+        fullname: userInfo.fullname,
+        avatar: userInfo.avatar
+      })
+      navigate('/home')
+      
     }
     catch (err: any) {
       const msg = err?.response?.data?.message || (err?.response?.status === 401 ? 'Username or password is incorrect!' : 'Login failed.');
