@@ -5,6 +5,7 @@ export const API_ENDPOINT = {
         verifyOTP: '/auth/verify-otp',
         completeRegister: '/auth/complete-register',
         refreshToken: '/auth/processNewToken',
-        logout: '/auth/logout'
+        logout: '/auth/logout',
+        verify: '/auth/verify'
     }
 } as const

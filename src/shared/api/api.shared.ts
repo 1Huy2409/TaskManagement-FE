@@ -44,6 +44,10 @@ export const api = {
         logout: async <T = any>(): Promise<ApiResponse<T>> => {
             const res = await axiosInstance.post<ApiResponse<T>>(API_ENDPOINT.auth.logout, {}, { withCredentials: true });
             return res.data;
+        },
+        verifyToken: async <T = any>(): Promise<ApiResponse<T>> => {
+            const res = await axiosInstance.get<ApiResponse<T>>(API_ENDPOINT.auth.verify);
+            return res.data;
         }
     }
 }
