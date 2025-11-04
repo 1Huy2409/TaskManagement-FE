@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, lazy, Suspense } from "react"
 import { api } from "@/shared/api/api.shared"
 import type { Workspace } from "@/types/workspace/workspace"
 import type { Board } from "@/types/board/board"
-import { WorkspaceCard } from "@/components/workspace-card"
 import { Button } from "@/components/ui/button"
-import { Plus, Loader2 } from "lucide-react"
+import { Plus, Loader2, Component } from "lucide-react"
+import { ComponentLoader } from "@/components/loading-component"
 // import { useNavigate } from "react-router-dom"
-
+const WorkspaceCard = lazy(() => import('@/components/workspace-card').then(module => ({ default: module.WorkspaceCard })))
 interface WorkspaceWithBoards {
   workspace: Workspace;
   boards: Board[];
@@ -131,6 +131,7 @@ export default function DashboardHome() {
         </div>
       ) : (
         <div className="space-y-8">
+          <Suspense fallback={<ComponentLoader />}>
           {workspacesData.map(({ workspace, boards }) => (
             <WorkspaceCard
               key={workspace.id}
@@ -140,6 +141,7 @@ export default function DashboardHome() {
               onAddBoard={handleAddBoard}
             />
           ))}
+          </Suspense>
         </div>
       )}
     </div>
