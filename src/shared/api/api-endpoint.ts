@@ -7,5 +7,9 @@ export const API_ENDPOINT = {
         refreshToken: '/auth/processNewToken',
         logout: '/auth/logout',
         verify: '/auth/verify'
-    }
+    },
+    workspace: {
+        getAll: '/workspaces',
+        getBoards: (workspaceId: string) => `/workspaces/${workspaceId}/boards`,
+    },
 } as const

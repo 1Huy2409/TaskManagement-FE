@@ -68,7 +68,8 @@ export class FetchFactory {
                             {},
                             { withCredentials: true }
                         );
-                        const newAccessToken = response.data.responseObject.newAccessToken;
+                        // Backend trả về { responseObject: { accessToken: ... } }
+                        const newAccessToken = response.data.responseObject.accessToken;
                         setAccessToken(newAccessToken);
 
                         if (originalRequest.headers) {

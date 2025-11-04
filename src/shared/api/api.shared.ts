@@ -49,5 +49,15 @@ export const api = {
             const res = await axiosInstance.get<ApiResponse<T>>(API_ENDPOINT.auth.verify);
             return res.data;
         }
+    },
+    workspace: {
+        getAll: async <T = any>(): Promise<ApiResponse<T>> => {
+            const res = await axiosInstance.get<ApiResponse<T>>(API_ENDPOINT.workspace.getAll, { withCredentials: true });
+            return res.data;
+        },
+        getBoards: async <T = any>(workspaceId: string): Promise<ApiResponse<T>> => {
+            const res = await axiosInstance.get<ApiResponse<T>>(API_ENDPOINT.workspace.getBoards(workspaceId), { withCredentials: true });
+            return res.data;
+        }
     }
 }
