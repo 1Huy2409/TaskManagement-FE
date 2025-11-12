@@ -58,6 +58,14 @@ export const api = {
         getBoards: async <T = any>(workspaceId: string): Promise<ApiResponse<T>> => {
             const res = await axiosInstance.get<ApiResponse<T>>(API_ENDPOINT.workspace.getBoards(workspaceId), { withCredentials: true });
             return res.data;
+        },
+        updateBoard: async <T = any>(id: string, boardId: string, data: any): Promise<ApiResponse<T>> => {
+            const res = await axiosInstance.patch<ApiResponse<T>>(`/workspaces/${id}/boards/${boardId}`, data, { withCredentials: true });
+            return res.data;
+        },
+        deleteBoard: async <T = any>(id: string): Promise<ApiResponse<T>> => {
+            const res = await axiosInstance.delete<ApiResponse<T>>(`/boards/${id}`, { withCredentials: true });
+            return res.data;
         }
     }
 }

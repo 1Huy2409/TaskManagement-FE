@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Plus, LayoutDashboard, Users } from "lucide-react"
 import type { Workspace } from "@/types/workspace/workspace"
 import type { Board } from "@/types/board/board"
+import { BoardCardMenu } from "@/features/dashboard/ui/board-card-menu"
 
 interface WorkspaceCardProps {
   workspace: Workspace;
@@ -54,7 +55,7 @@ export function WorkspaceCard({ workspace, boards, onBoardClick, onAddBoard }: W
           {boards.map((board) => (
             <Card
               key={board.id}
-              className="cursor-pointer hover:shadow-md hover:border-primary/50 transition-all"
+              className="group cursor-pointer hover:shadow-md hover:border-primary/50 transition-all relative"
               onClick={() => onBoardClick(board.id)}
             >
               <CardContent className="p-4">
@@ -71,6 +72,10 @@ export function WorkspaceCard({ workspace, boards, onBoardClick, onAddBoard }: W
                           {board.description}
                         </p>
                       )}
+                    </div>
+                    {/* Menu Button */}
+                    <div className="absolute top-2 right-2">
+                      <BoardCardMenu boardId={board.id} />
                     </div>
                   </div>
 
